@@ -93,3 +93,111 @@
 </div>
 
 ### 3. State Machine Diagram
+
+
+## 2. Software Architecture
+
+**1. What does “InitializeSerialConsole()” do? In said function, what is “cbufRx” and “cbufTx”? What type of data structure is it?** 
+* InitializeSearialConsole() sets up the MCU to communicate using UART. It sets up circular buffters to store data when recieving and sending messages. 
+* cbuffRx stores recieved data
+* cbufTx stores data that is to be transmitted. 
+* Both cubffRx and cbuffTx are circular buffters. 
+
+**2. How are “cbufRx” and “cbufTx” initialized? Where is the library that defines them (please list the *C file they come from).** 
+* This is how cbuffRx and cbuffTx are initialized. 
+  
+  cbufRx = circular_buf_init((uint8_t *)rxCharacterBuffer, RX_BUFFER_SIZE);
+  cbufTx = circular_buf_init((uint8_t *)txCharacterBuffer, TX_BUFFER_SIZE);
+
+
+* they are defined in CLI Starter [SerialConsole.c>](<CLI Starter Code/src/SerialConsole/SerialConsole.c>)
+  
+
+**3. Where are the character arrays where the RX and TX characters are being stored at the end? Please mention their name and size. Tip: Please note cBufRx and cBufTx are structures.** 
+
+
+
+char rxCharacterBuffer[RX_BUFFER_SIZE];
+
+char txCharacterBuffer[TX_BUFFER_SIZE];
+
+#define RX_BUFFER_SIZE 512 
+
+#define TX_BUFFER_SIZE 512
+name - rxCharacterBuffer, txCharacterBuffer
+size- 512 bytesfor both.
+
+Being stored in latestRx and latestTx variable. 
+usart_read_buffer_job(&usart_instance, (uint8_t *)&latestRx, 1); // Kicks off constant reading of characters
+
+**4. Where are the interrupts for UART character received and UART character sent defined?**
+
+* They are defined in SerialConsole.c 
+usart_read_callback(): Triggered when a character is received.
+
+usart_write_callback(): Triggered when a character is transmitted.
+
+
+
+
+**5. What are the callback functions that are called when:**
+**A character is received? (RX)**
+**A character has been sent? (TX)**
+* usart_read_callback(): Triggered when a character is received.
+
+* usart_write_callback(): Triggered when a character is transmitted.
+
+
+**6. Explain what is being done on each of these two callbacks and how they relate to the cbufRx and cbufTx buffers.**
+
+**For receiving**
+* This function is called when a new character is received from UART.
+* It stores the recieved character into cbuffRx circular buffer. 
+* The recieved character latestRx is added to the circular buffer. 
+* usart_read_buffer_job() this function is restarted to keep recieving more characters.
+
+**For sending**
+* This function is called when a character has been sent.
+* It fetches the next character from cbuffTx and sends it.
+* If cbufTx has more data, it takes the next character (latestTx) and sends it.
+* Calls usart_write_buffer_job() to send the next character.
+
+
+**7. Draw a diagram that explains the program flow for UART receive – starting with the user typing a character and ending with how that characters ends up in the circular buffer “cbufRx”. Please make reference to specific functions in the starter code.**
+
+User types character ('A') on keyboard
+        │
+        ▼
+UART receives character ('A')
+        │
+Interrupt occurs → `usart_read_callback()`
+        │
+Character stored in `cbufRx` (circular buffer)
+        │
+Function `usart_read_buffer_job()` restarted
+
+
+
+
+**8. Draw a diagram that explains the program flow for the UART transmission – starting from a string added by the program to the circular buffer “cbufTx” and ending on characters being shown on the screen of a PC (On Teraterm, for example). Please make reference to specific functions in the starter code.**
+
+Program calls `SerialConsoleWriteString("Hello")`
+        │
+String stored in `cbufTx` (circular buffer)
+        │
+USART transmission begins (First character 'H')
+        │
+Interrupt occurs → `usart_write_callback()`
+        │
+Next character ('e') retrieved from `cbufTx`
+        │
+Transmitted over UART
+        │
+Process repeats until `cbufTx` is empty
+
+
+**9. What is done on the function “startStasks()” in main.c? How many threads are started?**
+
+* startStasks() logs heap memory before creating tasks, it creates Command line interface task & Logs heap memory after task creation.
+* vCommandConsoleTask is the only task that is created, but FreeRTOS itself starts Idle task and timer Task when this task is called.
+  
