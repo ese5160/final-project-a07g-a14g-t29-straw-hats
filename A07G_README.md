@@ -200,4 +200,5 @@ Process repeats until `cbufTx` is empty
 
 * startStasks() logs heap memory before creating tasks, it creates Command line interface task & Logs heap memory after task creation.
 * vCommandConsoleTask is the only task that is created, but FreeRTOS itself starts Idle task and timer Task when this task is called.
-  
+
+## 3. Debug Logger Module   
