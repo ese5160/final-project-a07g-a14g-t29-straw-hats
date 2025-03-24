@@ -148,7 +148,8 @@ void setLogLevel(enum eDebugLogLevels debugLevel)
 }
 
 /**
- * @brief Logs a message at the specified debug level.
+ * @brief Logs a message at the specified debug level. Prints the error log message in the serial monitor.
+ * @param level The debug level is noted. format The string which is pushed to the buffer.
  */
 void LogMessage(enum eDebugLogLevels level, const char *format, ...)
 {
