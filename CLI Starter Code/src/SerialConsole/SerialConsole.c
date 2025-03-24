@@ -28,6 +28,7 @@
  ******************************************************************************/
 #include "SerialConsole.h"
 
+
 /******************************************************************************
  * Defines
  ******************************************************************************/
@@ -153,6 +154,15 @@ void LogMessage(enum eDebugLogLevels level, const char *format, ...)
 {
     // Todo: Implement Debug Logger
 	// More detailed descriptions are in header file
+	
+	va_list args;
+	char buffer[100];
+	if( level >= currentDebugLevel ){
+		va_start( args, format);
+		vsprintf(buffer, format, args);
+		va_end(args);
+		SerialConsoleWriteString(buffer);
+	}
 }
 
 /*
