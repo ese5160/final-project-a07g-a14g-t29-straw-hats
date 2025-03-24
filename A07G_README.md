@@ -110,7 +110,7 @@
   cbufTx = circular_buf_init((uint8_t *)txCharacterBuffer, TX_BUFFER_SIZE);
 
 
-* they are defined in CLI Starter [SerialConsole.c>](<CLI Starter Code/src/SerialConsole/SerialConsole.c>)
+* they are defined in CLI Starter [circular_buffer](<CLI Starter Code/src/SerialConsole/circular_buffer.c>)
   
 
 **3. Where are the character arrays where the RX and TX characters are being stored at the end? Please mention their name and size. Tip: Please note cBufRx and cBufTx are structures.** 
@@ -128,15 +128,10 @@ name - rxCharacterBuffer, txCharacterBuffer
 size- 512 bytesfor both.
 
 Being stored in latestRx and latestTx variable. 
+
 usart_read_buffer_job(&usart_instance, (uint8_t *)&latestRx, 1); // Kicks off constant reading of characters
 
 **4. Where are the interrupts for UART character received and UART character sent defined?**
-
-* They are defined in SerialConsole.c 
-usart_read_callback(): Triggered when a character is received.
-
-usart_write_callback(): Triggered when a character is transmitted.
-
 
 
 
