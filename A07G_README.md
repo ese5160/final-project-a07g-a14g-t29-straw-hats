@@ -11,21 +11,21 @@
 ### 1.
 *Hardware Requirements:*
 
-### Power Management
+#### Power Management
 | **HRS ID** | **Requirement** |
 | --- | --- |
 | HRS-01 | The power ON/OFF button shall control when the circuit should be powered. |
 | HRS-02 | Power rail 1 should have 3.3V, which is stepped down from the input 5V using a buck convertor. |
 | HRS-03 | Power rail 2 should have 5V, which is maintained by a buck boost convertor.|
 
-### Sensor setup 
+#### Sensor setup 
 | **HRS ID** | **Requirement** |
 | --- | --- |
 | HRS-04 | MICS-5524 sensor shall measure with a ±5% accuracy. |
 | HRS-05 | The sensor shall measure the gas in parts per millions based on the change in output voltage across the load. |
 
 
-### Web Interface
+#### Actuator Setup
 
 | **HRS ID** | **Requirement** |
 | --- | --- |
@@ -60,7 +60,7 @@
 | SRS-13 | When Level 1 toxicity is observed, the displayed text shall be "Toxicity Level- 3, Danger! Please evacuate."  |
 | SRS-14 | The OLED display shall be refreshed every 5 seconds with new CO readings Observed from the sensor.  |
 
-### Operations
+#### Operations
 | **SRS ID** | **Requirement** |
 | --- | --- |
 | SRS-15 | The system shall have different modes of operations based on the toxicity level that are classified based on the CO detected ppm. |
@@ -70,14 +70,14 @@
 | SRS-19 | The speed of the fan shall be controlled by PWM mode. |
 
 
-### Indicators 
+#### Indicators 
 | **SRS ID** | **Requirement** |
 | --- | --- |
 | SRS-20 | The buzzer shall go off when the toxicity level 3 is flagged. |
 | SRS-21 | The Red LED shall turn ON when toxicity level 3 is flagged. |
 
 
-### Web Interface
+#### Web Interface
 
 | **SRS ID** | **Requirement** |
 | --- | --- |
@@ -184,11 +184,18 @@ void usart_read_callback(struct usart_module *const usart_module); // Callback f
 ### 1. Questions 
 #### 1. What nets must you attach the logic analyzer to? (Check how the firmware sets up the UART in SerialConsole.c!)
 
+The Pins connected to the logic analyser are:
+- Tx: PB 10 in Sercom4 pad 2
+- Rx: PB 11 in Sercom4 pad 3
 
 #### 2. Where on the circuit board can you attach / solder to?
 
+The logic analyser should be connected to the pin headers or test points.
 
 #### 3. What are critical settings for the logic analyzer?
+
+- Baud rate: 115200
+- Channel: Serial Async
 
 ### 2. 
 Picture of the logic analyzer connections-
@@ -209,4 +216,8 @@ Picture of the logic analyzer connections-
 
 ## 5.
 
+Code available in the CLI_Starter_Code folder.
+
 ## 6. 
+
+The video is avalible <a href='https://drive.google.com/file/d/1A0DYpABXqT-hnzXwfkn-zc3uM7b_FhlD/view?usp=drive_link'>here</a>.
