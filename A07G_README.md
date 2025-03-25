@@ -94,6 +94,9 @@
 
 ### 3. State Machine Diagram
 
+<div align=center>
+<img src="/Images/StateDiagram.drawio.png" width="600">  
+</div>
 
 ## 2. Software Architecture
 
