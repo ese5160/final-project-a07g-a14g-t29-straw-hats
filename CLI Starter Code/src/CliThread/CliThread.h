@@ -7,10 +7,12 @@
 ******************************************************************************/
 
 #pragma once
-
+#define FIRMWARE_VERSION "1.0.0"
 #include "asf.h"
 #include "SerialConsole.h"
 #include "FreeRTOS_CLI.h"
+
+extern SemaphoreHandle_t xRxSemaphore;
 
 
 #define CLI_TASK_SIZE	256		///<STUDENT FILL
@@ -23,6 +25,8 @@
 #define CLI_MSG_LEN						16
 #define CLI_PC_ESCAPE_CODE_SIZE			4
 #define CLI_PC_MIN_ESCAPE_CODE_SIZE		2
+
+
 
 
 #define ASCII_BACKSPACE					0x08

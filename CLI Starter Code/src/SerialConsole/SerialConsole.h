@@ -34,6 +34,11 @@
  #include <stdarg.h>
  #include <stdio.h>
  #include "circular_buffer.h"
+ #include "FreeRTOS.h"
+ #include "semphr.h"
+
+ SemaphoreHandle_t xRxSemaphore;
+
  
  /******************************************************************************
   * Enumerations
