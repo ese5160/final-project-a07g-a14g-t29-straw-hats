@@ -133,14 +133,14 @@ usart_read_buffer_job(&usart_instance, (uint8_t *)&latestRx, 1); // Kicks off co
 
 **4. Where are the interrupts for UART character received and UART character sent defined?**
 
-
+* interrupts for UART character received and UART character sent are defined in usart_write_callback () and usart_read_callback(). 
+* The interrupt handler is part of the Microchip ASF library, which manages low-level USART operations. The callback usart_read_callback() is linked to this driver and is executed automatically when a receive interrupt occurs.
 
 **5. What are the callback functions that are called when:**
 **A character is received? (RX)**
 **A character has been sent? (TX)**
-* usart_read_callback(): Triggered when a character is received.
-
-* usart_write_callback(): Triggered when a character is transmitted.
+void usart_write_callback(struct usart_module *const usart_module); // Callback for when we finish writing characters to UART
+void usart_read_callback(struct usart_module *const usart_module); // Callback for when we finis reading characters from UART
 
 
 **6. Explain what is being done on each of these two callbacks and how they relate to the cbufRx and cbufTx buffers.**
@@ -159,41 +159,51 @@ usart_read_buffer_job(&usart_instance, (uint8_t *)&latestRx, 1); // Kicks off co
 
 
 **7. Draw a diagram that explains the program flow for UART receive – starting with the user typing a character and ending with how that characters ends up in the circular buffer “cbufRx”. Please make reference to specific functions in the starter code.**
-
-User types character ('A') on keyboard
-        │
-        ▼
-UART receives character ('A')
-        │
-Interrupt occurs → `usart_read_callback()`
-        │
-Character stored in `cbufRx` (circular buffer)
-        │
-Function `usart_read_buffer_job()` restarted
-
-
-
+<div align=center>
+<img src="/Images/P_7.jpg" width="600">  
+</div>
 
 **8. Draw a diagram that explains the program flow for the UART transmission – starting from a string added by the program to the circular buffer “cbufTx” and ending on characters being shown on the screen of a PC (On Teraterm, for example). Please make reference to specific functions in the starter code.**
 
-Program calls `SerialConsoleWriteString("Hello")`
-        │
-String stored in `cbufTx` (circular buffer)
-        │
-USART transmission begins (First character 'H')
-        │
-Interrupt occurs → `usart_write_callback()`
-        │
-Next character ('e') retrieved from `cbufTx`
-        │
-Transmitted over UART
-        │
-Process repeats until `cbufTx` is empty
-
+<div align=center>
+<img src="/Images/P_8.jpg" width="600">  
+</div>
 
 **9. What is done on the function “startStasks()” in main.c? How many threads are started?**
 
 * startStasks() logs heap memory before creating tasks, it creates Command line interface task & Logs heap memory after task creation.
 * vCommandConsoleTask is the only task that is created, but FreeRTOS itself starts Idle task and timer Task when this task is called.
 
-## 3. Debug Logger Module   
+## 3. Debug Logger Module  
+
+
+## 4. Wiretap the convo!
+### 1. Questions 
+#### 1. What nets must you attach the logic analyzer to? (Check how the firmware sets up the UART in SerialConsole.c!)
+
+
+#### 2. Where on the circuit board can you attach / solder to?
+
+
+#### 3. What are critical settings for the logic analyzer?
+
+### 2. 
+Picture of the logic analyzer connections-
+
+<div align=center>
+<img src="/Images/Salea.jpg" width="600">  
+</div>
+
+
+### 3. SS 
+<div align=center>
+<img src="/Images/Decoded_text.jpg" width="600">  
+</div>
+
+
+### 4. SAl
+[.sal](Part4.sal)
+
+## 5.
+
+## 6. 
