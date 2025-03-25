@@ -28,7 +28,6 @@
  ******************************************************************************/
 #include "SerialConsole.h"
 
-
 /******************************************************************************
  * Defines
  ******************************************************************************/
@@ -63,6 +62,8 @@ struct usart_module usart_instance;
 char rxCharacterBuffer[RX_BUFFER_SIZE]; 			   ///< Buffer to store received characters
 char txCharacterBuffer[TX_BUFFER_SIZE]; 			   ///< Buffer to store characters to be sent
 enum eDebugLogLevels currentDebugLevel = LOG_INFO_LVL; ///< Default debug level
+SemaphoreHandle_t xRxSemaphore = NULL;
+
 
 /******************************************************************************
  * Global Functions
@@ -148,22 +149,20 @@ void setLogLevel(enum eDebugLogLevels debugLevel)
 }
 
 /**
- * @brief Logs a message at the specified debug level. Prints the error log message in the serial monitor.
- * @param level The debug level is noted. format The string which is pushed to the buffer.
+ * @brief Logs a message at the specified debug level.
  */
-void LogMessage(enum eDebugLogLevels level, const char *format, ...)
-{
-    // Todo: Implement Debug Logger
-	// More detailed descriptions are in header file
+void LogMessage(enum eDebugLogLevels level, const char *format, ...) {
+	if (level >=currentDebugLevel) {
+
 	
+	char logBuffer[256];  // Buffer for the final log message
+
 	va_list args;
-	char buffer[100];
-	if( level >= currentDebugLevel ){
-		va_start( args, format);
-		vsprintf(buffer, format, args);
-		va_end(args);
-		SerialConsoleWriteString(buffer);
-	}
+	va_start(args, format);
+	vsprintf(logBuffer, format, args);  // Append formatted message
+
+	SerialConsoleWriteString(logBuffer);  // Print to serial console
+}
 }
 
 /*
@@ -239,8 +238,8 @@ void usart_read_callback(struct usart_module *const usart_module)
 	// Restart next read job so we continuously receive
 	usart_read_buffer_job(&usart_instance, (uint8_t *)&latestRx, 1);
 	portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-	 
 }
+
 
 /**************************************************************************/ 
 /**

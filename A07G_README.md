@@ -184,11 +184,18 @@ void usart_read_callback(struct usart_module *const usart_module); // Callback f
 ### 1. Questions 
 #### 1. What nets must you attach the logic analyzer to? (Check how the firmware sets up the UART in SerialConsole.c!)
 
+The Pins connected to the logic analyser are:
+- Tx: PB 10 in Sercom4 pad 2
+- Rx: PB 11 in Sercom4 pad 3
 
 #### 2. Where on the circuit board can you attach / solder to?
 
+The logic analyser should be connected to the pin headers or test points.
 
 #### 3. What are critical settings for the logic analyzer?
+
+- Baud rate: 115200
+- Channel: Serial Async
 
 ### 2. 
 Picture of the logic analyzer connections-
